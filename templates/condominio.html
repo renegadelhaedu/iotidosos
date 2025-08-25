@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Monitoramento de Casas</title>
+    <link rel="stylesheet" href="../static/css/condominio.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Monitoramento de Casas</h1>
+            <p>Monitoramento em tempo real de sensores de segurança</p>
+
+            <p>
+                <a style="background-color: white; border-radius: 6px;margin-top: 5px"  href="/logs">Clique aqui para acessar os Logs</a>
+            </p>
+
+
+        </header>
+
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="status-dot connected" id="statusDot"></div>
+                <span id="statusText">Conectado ao servidor</span>
+            </div>
+            <div id="lastUpdate">Última atualização: -</div>
+        </div>
+
+        <div class="houses-grid" id="housesGrid">
+            <!-- As casas serão geradas via JavaScript -->
+        </div>
+
+        <div class="alerts-panel">
+            <h2>Histórico de Alertas</h2>
+            <div id="alertsContainer">
+                <!-- Alertas serão adicionados aqui -->
+            </div>
+        </div>
+
+        <footer>
+            <p>Sistema de Monitoramento &copy; 2023 - Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <script src="../static/js/condominio.js"></script>
+</body>
+</html>

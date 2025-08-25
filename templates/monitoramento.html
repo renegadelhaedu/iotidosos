@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Painel de Monitoramento - Projeto Sentinela</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Monitoramento em Tempo Real</h1>
+    <div id="alertas">
+        </div>
+
+    <script>
+        // Cria a conexão WebSocket com o servidor
+        var socket = io();
+
+        // Escuta o evento 'novo_alerta' enviado pelo servidor
+        socket.on('novo_alerta', function(data) {
+            console.log("Alerta recebido:", data);
+
+            // Cria um novo elemento na página para exibir o alerta
+            var novoAlerta = document.createElement('p');
+            novoAlerta.textContent = `🚨 ALERTA! Casa ${data.casa}: ${data.alerta}`;
+
+            // Adiciona o novo alerta ao painel
+            document.getElementById('alertas').prepend(novoAlerta);
+        });
+    </script>
+</body>
+</html>

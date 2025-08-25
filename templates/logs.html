@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs do Sistema de Monitoramento</title>
+    <link rel="stylesheet" href="../static/css/logs.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Logs do Sistema de Monitoramento</h1>
+            <p>Visualize e filtre os registros de alertas das casas monitoradas</p>
+        </header>
+
+        <section class="filter-section">
+            <h2>Filtrar Logs</h2>
+            <form class="filter-form" action="/logs" method="GET">
+                <div class="form-group">
+                    <label for="casa_id">ID da Casa:</label>
+                    <input type="text" id="casa_id" name="casa_id" placeholder="Digite o ID da casa"
+                           value="{{ casa_id if casa_id }}">
+                </div>
+                <button type="submit">Filtrar</button>
+                <a href="/logs"><button type="button">Limpar Filtro</button></a>
+            </form>
+        </section>
+
+        <section class="logs-section">
+            <h2>Registros de Logs</h2>
+            <div class="table-container">
+                {% if logs %}
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data/Hora</th>
+                            <th>Casa</th>
+                            <th>Tipo de Alerta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.id }}</td>
+                            <td>{{ log.data_hora_formatada }}</td>
+                            <td>{{ log.casa_id }}</td>
+                            <td>{{ log.tipo_alerta }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-logs">Nenhum log encontrado.</div>
+                {% endif %}
+            </div>
+        </section>
+
+        <footer>
+            <p>Sistema de Monitoramento &copy; 2023 - Todos os direitos reservados</p>
+        </footer>
+    </div>
+</body>
+</html>
