@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const socket = io();
 
     // Gerar 12 casas (retângulos verdes)
-    for (let i = 1; i <= 22; i++) {
+    for (let i = 1; i <= 15; i++) {
         const house = document.createElement('div');
         house.className = 'house normal';
         house.id = `house-${i}`;
