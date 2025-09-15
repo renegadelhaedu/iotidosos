@@ -1,82 +1,103 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const housesGrid = document.getElementById('housesGrid');
-    const alertsContainer = document.getElementById('alertsContainer');
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    const lastUpdate = document.getElementById('lastUpdate');
+function playAlertSound() {
+    try {
+        const audioContext = new AudioContext();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
 
-    // Conectar ao servidor Socket.IO
-    const socket = io();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-    // Gerar 12 casas (retângulos verdes)
-    for (let i = 1; i <= 15; i++) {
-        const house = document.createElement('div');
-        house.className = 'house normal';
-        house.id = `house-${i}`;
-        house.innerHTML = `
-            <div class="house-id">${i}</div>
-            <div class="house-status">Normal</div>
-        `;
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
 
-        // Adicionar evento de clique para resetar o status
-        house.addEventListener('click', function() {
-            if (this.classList.contains('alert')) {
-                this.classList.remove('alert');
-                this.classList.add('normal');
-                this.querySelector('.house-status').textContent = 'Normal';
-            }
-        });
-
-        housesGrid.appendChild(house);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.2);
+    } catch (error) {
+        console.warn('Não foi possível reproduzir som:', error);
     }
+}
 
-    // Evento de conexão
-    socket.on('connect', function() {
-        statusDot.className = 'status-dot connected';
-        statusText.textContent = 'Conectado ao servidor';
-        updateLastUpdateTime();
-    });
+const socket = io();
+const statusDot = document.getElementById('statusDot');
+const statusText = document.getElementById('statusText');
 
-    // Evento de desconexão
-    socket.on('disconnect', function() {
-        statusDot.className = 'status-dot disconnected';
-        statusText.textContent = 'Desconectado do servidor';
-    });
+socket.on('connect', function() {
+    statusDot.className = 'status-dot connected';
+    statusText.textContent = 'Conectado ao servidor';
 
-    // Evento para receber alertas
-    socket.on('novo_alerta', function(data) {
-        const houseId = data.casa;
-        const alertType = data.alerta;
-
-        // Atualizar a casa correspondente
-        const houseElement = document.getElementById(`house-${houseId}`);
-        if (houseElement) {
-            houseElement.classList.remove('normal');
-            houseElement.classList.add('alert');
-            houseElement.querySelector('.house-status').textContent = 'Alerta!';
-        }
-
-        // Adicionar ao histórico de alertas
-        const alertItem = document.createElement('div');
-        alertItem.className = 'alert-item';
-        alertItem.innerHTML = `
-            <div>
-                <strong>Casa ${houseId}</strong>: ${alertType}
-            </div>
-            <div class="alert-time">${new Date().toLocaleTimeString()}</div>
-        `;
-
-        alertsContainer.prepend(alertItem);
-
-        // Manter apenas os 10 alertas mais recentes
-        if (alertsContainer.children.length > 10) {
-            alertsContainer.removeChild(alertsContainer.lastChild);
-        }
-
-        updateLastUpdateTime();
-    });
-
-    function updateLastUpdateTime() {
-        lastUpdate.textContent = `Última atualização: ${new Date().toLocaleTimeString()}`;
-    }
 });
+
+socket.on('disconnect', function() {
+    statusDot.className = 'status-dot disconnected';
+    statusText.textContent = 'Desconectado do servidor';
+});
+
+socket.on('novo_alerta', function(data) {
+    const houseId = data.casa;
+    const alertType = data.alerta;
+
+    const houseElement = document.getElementById(`house${houseId}`);
+    if (houseElement) {
+        playAlertSound();
+        houseElement.classList.remove('normal');
+        houseElement.classList.add('alert');
+        houseElement.querySelector('.house-status').textContent = 'Alerta!';
+    }
+
+});
+
+
+
+function mostrarDetalhes(id) {
+    var house = document.getElementById('house' + id);
+    if (!house) {
+        console.error('Essa house não existe para o ID:', id);
+        return;
+    }
+    if(house.classList.contains('alert')){
+        house.classList.remove('alert');
+        house.classList.add('normal');
+        house.querySelector('.house-status').textContent = id;
+    }else{
+        const modal = document.getElementById('myModal');
+        const modalBody = document.getElementById('modal-body');
+
+        modalBody.innerHTML = 'Carregando detalhes...';
+        modal.style.display = 'block';
+
+
+        fetch('/detalhar_pessoa/'+ id)
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error('Erro na requisição');
+                }
+                return response.text();
+            })
+            .then(data => {
+
+                modalBody.innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                modalBody.innerHTML = 'Não foi possível carregar os detalhes.';
+            });
+    }
+
+
+}
+
+function fecharModal() {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+}
+
+
+window.onclick = function(event) {
+    const modal = document.getElementById('myModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+

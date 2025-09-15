@@ -28,19 +28,28 @@
             <div id="lastUpdate">Última atualização: -</div>
         </div>
 
-        <div class="houses-grid" id="housesGrid">
-            <!-- As casas serão geradas via JavaScript -->
+        <div class="houses-grid" >
+            {% for pessoa in pessoas %}
+
+                <div class="house normal" id="house{{pessoa[0]}}" onclick="mostrarDetalhes({{pessoa[0]}})">
+                    <div class="house-id">{{pessoa[1]}}</div>
+                    <div class="house-status">{{pessoa[0]}}</div>
+
+                </div>
+
+            {% endfor %}
         </div>
 
-        <div class="alerts-panel">
-            <h2>Histórico de Alertas</h2>
-            <div id="alertsContainer">
-                <!-- Alertas serão adicionados aqui -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal()">&times;</span>
+                <div id="modal-body">
+                </div>
             </div>
         </div>
 
         <footer>
-            <p>Sistema de Monitoramento &copy; 2023 - Todos os direitos reservados</p>
+            <p>Sistema de Monitoramento &copy; 2025 - Todos os direitos reservados ao projeto sentinela </p>
         </footer>
     </div>
 

@@ -6,7 +6,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uma_chave_secreta_aqui'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-
 sensor_controller = SensorController()
 
 
@@ -19,7 +18,6 @@ def receber_alerta():
 
 
     sensor_log = sensor_controller.processar_alerta(casa_id, tipo_alerta)
-
 
     socketio.emit('novo_alerta', {
         'casa': casa_id,
@@ -65,8 +63,22 @@ def obter_logs():
 
 @app.route('/')
 def monitoramento():
-    return render_template('condominio.html')
+    pessoas = [[1,'caca'],[2,'tete'],[3,'dada'],[4,'popo'],[5,'fefe']]
+    return render_template('condominio.html', pessoas=pessoas)
+
+
+@app.route('/detalhar_pessoa/<id>')
+def detalhes_pessoa(id):
+    print('recebi info do user ', id)
+    #temos que ir no BD pegar o user pelo id e trazer as informações
+    nome= 'João Silva'
+    idade = 25
+    historico_medico = 'Nenhuma condição crônica. Alergia a amendoim.'
+    telefone = '(83) 98765-4321'
+    pessoa_proxima = 'Maria Silva (Mãe) - (11) 91234-5678'
+    return render_template('detalhes.html', nome=nome, idade=idade, historico_medico=historico_medico, telefone=telefone, pessoa_proxima=pessoa_proxima)
+
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5050, debug=True, allow_unsafe_werkzeug=True)

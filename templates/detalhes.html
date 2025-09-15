@@ -1,0 +1,92 @@
+<style>
+
+    .person-card {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        color: #333;
+        max-width: 600px;
+        margin: auto; /* Centraliza no modal */
+        text-align: left;
+    }
+
+    .person-card h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 2em;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+    }
+
+    .detail-group {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #ffffff;
+        border-left: 5px solid #3498db;
+        border-radius: 5px;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .detail-group strong {
+        color: #2c3e50;
+        min-width: 120px; /* Garante alinhamento */
+        font-size: 1.1em;
+    }
+
+    .detail-group span {
+        flex-grow: 1;
+        color: #555;
+        font-size: 1.1em;
+    }
+
+    .detail-group.history {
+        border-left-color: #27ae60; /* Cor diferente para histórico médico */
+    }
+
+    .detail-group.contact {
+        border-left-color: #e67e22; /* Cor diferente para contato */
+    }
+
+    /* Ícones (opcional: requer Font Awesome ou similar, ou pode usar emojis) */
+    .icon {
+        margin-right: 8px;
+        color: #3498db; /* Cor padrão para ícones */
+    }
+    .history .icon { color: #27ae60; }
+    .contact .icon { color: #e67e22; }
+
+</style>
+
+<div class="person-card">
+    <h2>Detalhes de {{ nome }}</h2>
+
+    <div class="detail-group">
+        <strong class="icon">&#128100; Nome:</strong>
+        <span>{{ nome }}</span>
+    </div>
+
+    <div class="detail-group">
+        <strong class="icon">&#128118; Idade:</strong>
+        <span>{{ idade }} anos</span>
+    </div>
+
+    <div class="detail-group history">
+        <strong class="icon">&#128138; Histórico Médico:</strong>
+        <span>{{ historico_medico }}</span>
+    </div>
+
+    <div class="detail-group contact">
+        <strong class="icon">&#128222; Telefone:</strong>
+        <span>{{ telefone }}</span>
+    </div>
+
+    <div class="detail-group contact">
+        <strong class="icon">&#128101; Pessoa Próxima:</strong>
+        <span>{{ pessoa_proxima }}</span>
+    </div>
+</div>
