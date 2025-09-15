@@ -1,6 +1,9 @@
 from flask import *
 from flask_socketio import SocketIO
 from controllers.sensor_controller import SensorController
+import eventlet
+
+eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uma_chave_secreta_aqui'
