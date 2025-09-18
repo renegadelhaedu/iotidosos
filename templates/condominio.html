@@ -12,28 +12,27 @@
         <header>
             <h1>Sistema de Monitoramento de Casas</h1>
             <p>Monitoramento em tempo real de sensores de segurança</p>
-
-            <p>
-                <a style="background-color: white; border-radius: 6px;margin-top: 5px"  href="/logs">Clique aqui para acessar os Logs</a>
-            </p>
+            <div class="status-indicator">
+                <div class="status-dot connected" id="statusDot"></div>
+                <span id="statusText">Conectado ao servidor</span>
+            </div>
 
 
         </header>
 
         <div class="status-bar">
-            <div class="status-indicator">
-                <div class="status-dot connected" id="statusDot"></div>
-                <span id="statusText">Conectado ao servidor</span>
-            </div>
-            <div id="lastUpdate">Última atualização: -</div>
+
+            <a href="/pessoa/homepessoa" target="_blank">Gerenciar Pessoas</a>
+            <a href="/logs" target="_blank">Acessar Logs</a>
+
         </div>
 
         <div class="houses-grid" >
             {% for pessoa in pessoas %}
 
-                <div class="house normal" id="house{{pessoa[0]}}" onclick="mostrarDetalhes({{pessoa[0]}})">
-                    <div class="house-id">{{pessoa[1]}}</div>
-                    <div class="house-status">{{pessoa[0]}}</div>
+                <div class="house normal" id="house{{pessoa.numero_casa}}" onclick="mostrarDetalhes({{pessoa.id_pessoa}}, {{pessoa.numero_casa}})">
+                    <div class="house-id">{{pessoa.nome}}</div>
+                    <div class="house-status">Casa {{pessoa.numero_casa}}</div>
 
                 </div>
 

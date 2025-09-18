@@ -43,6 +43,22 @@ h1 {
     margin-bottom: 20px;
 }
 
+.status-bar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    border-radius: 6px;
+    border: 2px solid white;
+    padding: 3px 3px 3px 3px;
+}
+
+.status-bar a:hover {
+    background-color: lightblue;
+    
+}
+
 .status-indicator {
     display: flex;
     align-items: center;

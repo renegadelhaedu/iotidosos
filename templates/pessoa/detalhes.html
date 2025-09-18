@@ -1,0 +1,24 @@
+{% extends "pessoa/base.html" %}
+
+{% block titulo %}Detalhes de {{ pessoa.nome }}{% endblock %}
+
+{% block conteudo %}
+<div class="card">
+<div class="card-header">
+<h1>Detalhes de {{ pessoa.nome }}</h1>
+</div>
+<div class="card-body">
+<p><strong>ID:</strong> {{ pessoa.id_pessoa }}</p>
+<p><strong>Nome:</strong> {{ pessoa.nome }}</p>
+<p><strong>Casa:</strong> {{ pessoa.numero_casa }}</p>
+<p><strong>Data de Nascimento:</strong> {{ pessoa.data_nascimento }}</p>
+<p><strong>Telefone:</strong> {{ pessoa.telefone }}</p>
+<p><strong>Telefone de Emergência:</strong> {{ pessoa.telefone_emergencia }}</p>
+<p><strong>Histórico Médico:</strong> {{ pessoa.historico_medico }}</p>
+</div>
+<div class="card-actions">
+<a href="{{ url_for('pessoa.editar_pessoa', id=pessoa.id_pessoa) }}" class="button primary-button">Editar</a>
+<a href="{{ url_for('pessoa.listar_pessoas') }}" class="button secondary-button">Voltar para a Lista</a>
+</div>
+</div>
+{% endblock %}

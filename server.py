@@ -1,87 +1,74 @@
-from flask import *
-from flask_socketio import SocketIO
-from controllers.sensor_controller import SensorController
 import eventlet
-
 eventlet.monkey_patch()
+
+from flask import Flask, render_template, jsonify, request
+from flask_socketio import SocketIO
+from controllers.pessoa_bp import pessoa_bp
+from controllers.log_bp import log_bp
+from database.dao import engine, Base, PessoaDAO, Session, LogDAO
+from models.log import Log
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uma_chave_secreta_aqui'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-sensor_controller = SensorController()
+app.register_blueprint(pessoa_bp)
+app.register_blueprint(log_bp)
+
+
+
+@app.route('/')
+def monitoramento():
+
+    session = Session()
+    try:
+        dao = PessoaDAO(session)
+        pessoas = dao.obter_todas_pessoas()
+        return render_template('condominio.html', pessoas=pessoas)
+    finally:
+        session.close()
 
 
 @app.route('/alerta', methods=['GET'])
 def receber_alerta():
-    casa_id = request.args.get('id')
+    """Recebe alertas de sensores e salva no banco de dados."""
+    numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
-    print(f"Alerta recebido da casa {casa_id}: {tipo_alerta}")
+    descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
+    print(descricao)
 
+    session = Session()
+    try:
 
-    sensor_log = sensor_controller.processar_alerta(casa_id, tipo_alerta)
+        novo_log = Log(
+            id_log=None,
+            tipo_ocorrencia=tipo_alerta,
+            numero_casa=numero_casa,
+            descricao=descricao
+        )
 
-    socketio.emit('novo_alerta', {
-        'casa': casa_id,
-        'alerta': tipo_alerta,
-        'log_id': sensor_log.id,
-        'data_hora': sensor_log.data_hora.isoformat() if hasattr(sensor_log.data_hora,
-                                                                 'isoformat') else sensor_log.data_hora
-    })
+        dao = LogDAO(session)
+        log_salvo = dao.salvar_log(novo_log)
 
-    return jsonify({"status": "ok", "log_id": sensor_log.id}), 200
+        socketio.emit('novo_alerta', {
+            'casa': numero_casa,
+            'alerta': tipo_alerta,
+            'log_id': log_salvo.id_log,
+            'data_hora': log_salvo.horario.isoformat()
+        })
 
-
-@app.route('/logs', methods=['GET'])
-def obter_logs():
-
-    casa_id = request.args.get('casa_id')
-
-
-    if casa_id:
-        logs = sensor_controller.obter_logs_por_casa(casa_id)
-    else:
-        logs = sensor_controller.obter_todos_logs()
-
-
-    logs_formatados = []
-    for log in logs:
-        log_dict = log.to_dict()
-
-        if hasattr(log.data_hora, 'strftime'):
-            log_dict['data_hora_formatada'] = log.data_hora.strftime('%d/%m/%Y %H:%M:%S')
-        else:
-
-            try:
-                from datetime import datetime
-                dt = datetime.fromisoformat(str(log.data_hora).replace('Z', '+00:00'))
-                log_dict['data_hora_formatada'] = dt.strftime('%d/%m/%Y %H:%M:%S')
-            except (ValueError, AttributeError):
-                log_dict['data_hora_formatada'] = str(log.data_hora)
-        logs_formatados.append(log_dict)
-
-
-    return render_template('logs.html', logs=logs_formatados, casa_id=casa_id)
-
-@app.route('/')
-def monitoramento():
-    pessoas = [[1,'caca'],[2,'tete'],[3,'dada'],[4,'popo'],[5,'fefe']]
-    return render_template('condominio.html', pessoas=pessoas)
-
-
-@app.route('/detalhar_pessoa/<id>')
-def detalhes_pessoa(id):
-    print('recebi info do user ', id)
-    #temos que ir no BD pegar o user pelo id e trazer as informações
-    nome= 'João Silva'
-    idade = 25
-    historico_medico = 'Nenhuma condição crônica. Alergia a amendoim.'
-    telefone = '(83) 98765-4321'
-    pessoa_proxima = 'Maria Silva (Mãe) - (11) 91234-5678'
-    return render_template('detalhes.html', nome=nome, idade=idade, historico_medico=historico_medico, telefone=telefone, pessoa_proxima=pessoa_proxima)
+        return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
+    finally:
+        session.close()
 
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=5050, debug=True, allow_unsafe_werkzeug=True)
+    # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
+    # gunicorn --worker-class eventlet -w 1 server:app
+    socketio.run(app,
+                 host='0.0.0.0',
+                 port=5000,
+                 debug=True,
+                 allow_unsafe_werkzeug=True)

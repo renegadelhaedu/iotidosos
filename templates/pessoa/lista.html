@@ -1,0 +1,50 @@
+{% extends "pessoa/base.html" %}
+
+{% block titulo %}Lista de Pessoas{% endblock %}
+
+{% block conteudo %}
+<div class="content-header">
+<h1>Lista de Pessoas</h1>
+<a href="{{ url_for('pessoa.cadastrar_pessoa') }}" class="button primary-button">Cadastrar Nova Pessoa</a>
+</div>
+
+{% if casa_filtrada %}
+<p class="subtitle">Exibindo pessoas da {{ casa_filtrada }}</p>
+{% endif %}
+
+{% if pessoas %}
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Casa</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in pessoas %}
+            <tr>
+                <td>{{ p.id_pessoa }}</td>
+                <td>{{ p.nome }}</td>
+                <td>{{ p.numero_casa }}</td>
+                <td>{{ p.telefone }}</td>
+                <td class="table-actions">
+                    <a href="{{ url_for('pessoa.detalhes_pessoa', id=p.id_pessoa) }}" class="action-button view">Ver</a>
+                    <a href="{{ url_for('pessoa.editar_pessoa', id=p.id_pessoa) }}" class="action-button edit">Editar</a>
+                    <form method="POST" action="{{ url_for('pessoa.excluir_pessoa', id=p.id_pessoa) }}" onsubmit="return confirm('Tem certeza que deseja excluir esta pessoa?');" style="display:inline;">
+                        <button type="submit" class="action-button delete">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="empty-state">Nenhuma pessoa encontrada. <a href="{{ url_for('pessoa.cadastrar_pessoa') }}">Cadastre uma agora.</a></p>
+{% endif %}
+
+{% endblock %}

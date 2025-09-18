@@ -48,16 +48,18 @@ socket.on('novo_alerta', function(data) {
 
 
 
-function mostrarDetalhes(id) {
-    var house = document.getElementById('house' + id);
+function mostrarDetalhes(idpessoa, numcasa) {
+
+    var house = document.getElementById('house' + numcasa);
+
     if (!house) {
-        console.error('Essa house não existe para o ID:', id);
+        console.error('Essa house não existe para o ID:', numcasa);
         return;
     }
     if(house.classList.contains('alert')){
         house.classList.remove('alert');
         house.classList.add('normal');
-        house.querySelector('.house-status').textContent = id;
+        house.querySelector('.house-status').textContent = 'Casa ' + numcasa;
     }else{
         const modal = document.getElementById('myModal');
         const modalBody = document.getElementById('modal-body');
@@ -66,7 +68,7 @@ function mostrarDetalhes(id) {
         modal.style.display = 'block';
 
 
-        fetch('/detalhar_pessoa/'+ id)
+        fetch('pessoa/'+ idpessoa)
             .then(response => {
 
                 if (!response.ok) {

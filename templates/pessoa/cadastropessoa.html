@@ -1,0 +1,38 @@
+{% extends "pessoa/base.html" %}
+
+{% block titulo %}Cadastrar Pessoa{% endblock %}
+
+{% block conteudo %}
+<div class="card form-card">
+<div class="card-header">
+<h1>Cadastrar Nova Pessoa</h1>
+</div>
+<div class="card-body">
+<form id="form-cadastro" action="{{ url_for('pessoa.cadastrar_pessoa') }}" method="post">
+<label for="nome">Nome Completo</label>
+<input type="text" id="nome" name="nome" required>
+
+            <label for="numero_casa">Número da Casa</label>
+            <input type="text" id="numero_casa" name="numero_casa" required>
+
+            <label for="data_nascimento">Data de Nascimento</label>
+            <input type="date" id="data_nascimento" name="data_nascimento" required>
+
+            <label for="telefone">Telefone</label>
+            <input type="tel" id="telefone" name="telefone">
+
+            <label for="telefone_emergencia">Telefone de Emergência</label>
+            <input type="tel" id="telefone_emergencia" name="telefone_emergencia">
+
+            <label for="historico_medico">Histórico Médico</label>
+            <textarea id="historico_medico" name="historico_medico" rows="4"></textarea>
+
+            <div class="button-group">
+                <button type="submit" class="button primary-button">Salvar</button>
+                <a href="{{ url_for('pessoa.listar_pessoas') }}" class="button secondary-button">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
