@@ -68,7 +68,7 @@ function mostrarDetalhes(idpessoa, numcasa) {
         modal.style.display = 'block';
 
 
-        fetch('pessoa/'+ idpessoa)
+        fetch('pessoa/modal/'+ idpessoa)
             .then(response => {
 
                 if (!response.ok) {

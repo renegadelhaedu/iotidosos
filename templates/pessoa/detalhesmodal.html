@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block titulo %}{% endblock %} | Condomínio para Idosos</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pessoa.css') }}">
+<link href="https://www.google.com/search?q=https://fonts.googleapis.com/css2%3Ffamily%3DInter:wght%40400%3B500%3B700%26display%3Dswap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Detalhes de {{ pessoa.nome }}</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ pessoa.id_pessoa }}</p>
+                <p><strong>Nome:</strong> {{ pessoa.nome }}</p>
+                <p><strong>Casa:</strong> {{ pessoa.numero_casa }}</p>
+                <p><strong>Data de Nascimento:</strong> {{ pessoa.data_nascimento }}</p>
+                <p><strong>Telefone:</strong> {{ pessoa.telefone }}</p>
+                <p><strong>Telefone de Emergência:</strong> {{ pessoa.telefone_emergencia }}</p>
+                <p><strong>Histórico Médico:</strong> {{ pessoa.historico_medico }}</p>
+            </div>
+
+        </div>
+    </main>
+
+
+</body>
+</html>

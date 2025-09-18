@@ -8,7 +8,7 @@ from models.log import Log
 
 pessoa_bp = Blueprint('pessoa', __name__, url_prefix='/pessoa')
 
-# Configuração do banco de dados
+
 DATABASE_FILE = 'condominio.db'
 DB_PATH = f"sqlite:///{DATABASE_FILE}"
 engine = create_engine(DB_PATH, echo=True)
@@ -36,6 +36,20 @@ def listar_pessoas():
         session.close()
 
 
+@pessoa_bp.route('/modal/<int:id>')
+def detalhes_modal_pessoa(id):
+
+    session = get_session()
+    try:
+        dao = PessoaDAO(session)
+        pessoa = dao.obter_pessoa_por_id(id)
+        if not pessoa:
+            return render_template('erro.html', mensagem="Pessoa não encontrada"), 404
+
+        return render_template('pessoa/detalhesmodal.html', pessoa=pessoa)
+    finally:
+        session.close()
+
 @pessoa_bp.route('/<int:id>')
 def detalhes_pessoa(id):
     """Exibe detalhes de uma pessoa específica"""
@@ -57,7 +71,7 @@ def cadastrar_pessoa():
     if request.method == 'POST':
         session = get_session()
         try:
-            # Criar objeto Pessoa
+
             nova_pessoa = Pessoa(
                 id_pessoa=None, # id_pessoa será gerado pelo banco de dados
                 nome=request.form.get('nome'),
@@ -68,9 +82,8 @@ def cadastrar_pessoa():
                 numero_casa=request.form.get('numero_casa')
             )
 
-            # Salvar no banco
             dao = PessoaDAO(session)
-            pessoa_db = dao.salvar_pessoa(nova_pessoa)
+            dao.salvar_pessoa(nova_pessoa)
 
             return render_template('pessoa/homepessoa.html')
         finally:
