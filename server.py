@@ -67,7 +67,7 @@ if __name__ == '__main__':
     # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
     # gunicorn --worker-class eventlet -w 1 server:app
     socketio.run(app,
-                 #host='0.0.0.0',
+                 host='0.0.0.0',
                  port=5000,
                  debug=False,
                  allow_unsafe_werkzeug=True)
