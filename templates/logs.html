@@ -42,10 +42,10 @@
                     <tbody>
                         {% for log in logs %}
                         <tr>
-                            <td>{{ log.id }}</td>
-                            <td>{{ log.data_hora_formatada }}</td>
-                            <td>{{ log.casa_id }}</td>
-                            <td>{{ log.tipo_alerta }}</td>
+                            <td>{{ log.id_log }}</td>
+                            <td>{{ log.horario }}</td>
+                            <td>{{ log.numero_casa }}</td>
+                            <td>{{ log.tipo_ocorrencia }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

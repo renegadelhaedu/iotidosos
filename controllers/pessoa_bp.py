@@ -26,7 +26,6 @@ def home_page():
 
 @pessoa_bp.route('/')
 def listar_pessoas():
-    """Lista todas as pessoas cadastradas"""
     session = get_session()
     try:
         dao = PessoaDAO(session)
@@ -52,7 +51,6 @@ def detalhes_modal_pessoa(id):
 
 @pessoa_bp.route('/<int:id>')
 def detalhes_pessoa(id):
-    """Exibe detalhes de uma pessoa específica"""
     session = get_session()
     try:
         dao = PessoaDAO(session)
@@ -67,11 +65,9 @@ def detalhes_pessoa(id):
 
 @pessoa_bp.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar_pessoa():
-    """Cadastra uma nova pessoa"""
     if request.method == 'POST':
         session = get_session()
         try:
-
             nova_pessoa = Pessoa(
                 id_pessoa=None, # id_pessoa será gerado pelo banco de dados
                 nome=request.form.get('nome'),
@@ -94,7 +90,6 @@ def cadastrar_pessoa():
 
 @pessoa_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar_pessoa(id):
-    """Edita os dados de uma pessoa"""
     session = get_session()
     try:
         dao = PessoaDAO(session)
@@ -118,16 +113,12 @@ def editar_pessoa(id):
 
 @pessoa_bp.route('/excluir/<int:id>', methods=['POST'])
 def excluir_pessoa(id):
-    """Exclui uma pessoa"""
     session = get_session()
     try:
         dao = PessoaDAO(session)
         excluido = dao.excluir_pessoa(id)
         if excluido:
-            return jsonify({
-                "status": "sucesso",
-                "mensagem": "Pessoa excluída com sucesso"
-            }), 200
+            return redirect(url_for('listar_pessoas'))
         else:
             return jsonify({
                 "status": "erro",
@@ -159,7 +150,7 @@ def api_listar_pessoas():
 
 @pessoa_bp.route('/api/pessoas/<int:id>', methods=['GET'])
 def api_detalhes_pessoa(id):
-    """API para detalhes de uma pessoa específica (JSON)"""
+
     session = get_session()
     try:
         dao = PessoaDAO(session)
@@ -182,7 +173,7 @@ def api_detalhes_pessoa(id):
 
 @pessoa_bp.route('/por-casa/<numero_casa>')
 def pessoas_por_casa(numero_casa):
-    """Lista pessoas por número da casa"""
+
     session = get_session()
     try:
         dao = PessoaDAO(session)

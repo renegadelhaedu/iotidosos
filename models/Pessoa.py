@@ -1,4 +1,5 @@
 class Pessoa:
+    pi = 2.3
     def __init__(self, id_pessoa: int, nome: str, data_nascimento: str, telefone: str = None,
                  telefone_emergencia: str = None, historico_medico: str = None, numero_casa: str = None):
 

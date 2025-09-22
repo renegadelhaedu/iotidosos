@@ -29,4 +29,4 @@ class LogDB(Base):
     horario = Column(DateTime, default=datetime.now)
 
     def __repr__(self):
-        return f"<LogDB(tipo_ocorrencia='{self.tipo_ocorrencia}', numero_casa='{self.numero_casa}', horario='{self.horario}')>"
+        return f"<LogDB(tipo_ocorrencia='{self.tipo_ocorrencia}', numero_casa='{self.numero_casa}', horario='{self.horario.strftime('%d/%m/%Y %H:%M:%S')}')>"

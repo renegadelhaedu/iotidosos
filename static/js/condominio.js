@@ -1,3 +1,5 @@
+let alertIntervalId = null;
+
 function playAlertSound() {
     try {
         const audioContext = new AudioContext();
@@ -39,9 +41,11 @@ socket.on('novo_alerta', function(data) {
     const houseElement = document.getElementById(`house${houseId}`);
     if (houseElement) {
         playAlertSound();
+        alertIntervalId = setInterval(playAlertSound, 2000);
+
         houseElement.classList.remove('normal');
         houseElement.classList.add('alert');
-        houseElement.querySelector('.house-status').textContent = 'Alerta!';
+        houseElement.querySelector('.house-status').textContent = alertType;
     }
 
 });
@@ -57,6 +61,9 @@ function mostrarDetalhes(idpessoa, numcasa) {
         return;
     }
     if(house.classList.contains('alert')){
+        clearInterval(alertIntervalId);
+        alertIntervalId = null;
+
         house.classList.remove('alert');
         house.classList.add('normal');
         house.querySelector('.house-status').textContent = 'Casa ' + numcasa;

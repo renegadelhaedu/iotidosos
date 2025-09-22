@@ -62,7 +62,7 @@ class LogDAO:
         self.session = session
 
     def salvar_log(self, log):
-        """Salva um novo log no banco de dados."""
+        """Salva um novo log no banco de dados"""
         log_db = LogDB(
             tipo_ocorrencia=log.tipo_ocorrencia,
             numero_casa=log.numero_casa,

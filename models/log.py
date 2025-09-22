@@ -8,6 +8,10 @@ class Log:
         self.descricao = descricao
         self.horario = horario if horario is not None else datetime.now()
 
+    def formatar_horario(self):
+        self.horario = self.horario.strftime('%d/%m/%Y %H:%M:%S')
+
+
     def to_dict(self):
         return {
             'id_log': self.id_log,

@@ -9,7 +9,7 @@ from database.dao import engine, Base, PessoaDAO, Session, LogDAO
 from models.log import Log
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'uma_chave_secreta_aqui'
+app.config['SECRET_KEY'] = 'LJlhr3324DH1'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 app.register_blueprint(pessoa_bp)
@@ -31,12 +31,11 @@ def monitoramento():
 
 @app.route('/alerta', methods=['GET'])
 def receber_alerta():
-    """Recebe alertas de sensores e salva no banco de dados."""
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
-    print(descricao)
+
 
     session = Session()
     try:
@@ -68,7 +67,7 @@ if __name__ == '__main__':
     # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
     # gunicorn --worker-class eventlet -w 1 server:app
     socketio.run(app,
-                 host='0.0.0.0',
+                 #host='0.0.0.0',
                  port=5000,
                  debug=True,
                  allow_unsafe_werkzeug=True)
