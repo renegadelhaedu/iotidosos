@@ -21,6 +21,7 @@ buzzer_setup()
 @app.route('/teste')
 def buzzer():
     tocar_buzzer()
+    return 'buzzer ativou'
 
 
 @app.route('/')
