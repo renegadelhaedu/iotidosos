@@ -7,6 +7,7 @@ from controllers.pessoa_bp import pessoa_bp
 from controllers.log_bp import log_bp
 from database.dao import engine, Base, PessoaDAO, Session, LogDAO
 from models.log import Log
+from controllers.buzzer import setup as buzzer_setup, tocar_buzzer, cleanup as buzzer_cleanup
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'LJlhr3324DH1'
@@ -15,6 +16,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 app.register_blueprint(pessoa_bp)
 app.register_blueprint(log_bp)
 
+buzzer_setup()
+
+@app.route('/teste')
+def buzzer():
+    tocar_buzzer()
 
 
 @app.route('/')
@@ -57,11 +63,15 @@ def receber_alerta():
             'data_hora': log_salvo.horario.isoformat()
         })
 
+        #tocar_buzzer()
+
         return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
     finally:
         session.close()
 
-
+@app.teardown_appcontext
+def cleanup_gpio(exception):
+    buzzer_cleanup()
 
 if __name__ == '__main__':
     # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
