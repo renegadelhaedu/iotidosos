@@ -69,9 +69,9 @@ def receber_alerta():
     finally:
         session.close()
 
-@app.teardown_appcontext
-def cleanup_gpio(exception):
-    buzzer_cleanup()
+#@app.teardown_appcontext
+#def cleanup_gpio(exception):
+#    buzzer_cleanup()
 
 if __name__ == '__main__':
     # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
