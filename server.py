@@ -16,7 +16,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 app.register_blueprint(pessoa_bp)
 app.register_blueprint(log_bp)
 
-buzzer_setup()
+#buzzer_setup()
 
 @app.route('/teste')
 def buzzer():
@@ -42,7 +42,6 @@ def receber_alerta():
     tipo_alerta = request.args.get('tipo')
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
-
 
     session = Session()
     try:
