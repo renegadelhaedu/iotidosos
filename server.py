@@ -18,10 +18,10 @@ app.register_blueprint(log_bp)
 
 #buzzer_setup()
 
-@app.route('/teste')
-def buzzer():
-    tocar_buzzer()
-    return 'buzzer ativou'
+#@app.route('/teste')
+#def buzzer():
+#    tocar_buzzer()
+#    return 'buzzer ativou'
 
 
 @app.route('/')
@@ -62,8 +62,6 @@ def receber_alerta():
             'log_id': log_salvo.id_log,
             'data_hora': log_salvo.horario.isoformat()
         })
-
-        #tocar_buzzer()
 
         return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
     finally:
