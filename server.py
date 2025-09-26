@@ -1,5 +1,8 @@
 import eventlet
 eventlet.monkey_patch()
+import tocarsom
+
+import threading
 
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
@@ -16,13 +19,10 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 app.register_blueprint(pessoa_bp)
 app.register_blueprint(log_bp)
 
-#buzzer_setup()
 
-#@app.route('/teste')
-#def buzzer():
-#    tocar_buzzer()
-#    return 'buzzer ativou'
 
+def executar_audio():
+    tocarsom.tocar_som('lulu.mp3')
 
 @app.route('/')
 def monitoramento():
@@ -40,6 +40,8 @@ def monitoramento():
 def receber_alerta():
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
+
+    threading.Thread(target=executar_audio).start()
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
