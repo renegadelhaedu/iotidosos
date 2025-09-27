@@ -1,27 +1,10 @@
-import time
+from gpiozero import Buzzer
+from time import sleep
 
-try:
-    import RPi.GPIO as GPIO
-    HARDWARE_DISPONIVEL = True
-except ImportError:
-    HARDWARE_DISPONIVEL = False
+buzzer = Buzzer(17)  # use o número do pino GPIO, não o físico
 
-BUZZER_PIN = 18
-
-def setup():
-    if HARDWARE_DISPONIVEL:
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(BUZZER_PIN, GPIO.OUT)
-        GPIO.output(BUZZER_PIN, GPIO.LOW)
-
-def tocar_buzzer(duracao=3.0):
-    if HARDWARE_DISPONIVEL:
-        GPIO.output(BUZZER_PIN, GPIO.HIGH)
-        time.sleep(duracao)
-        GPIO.output(BUZZER_PIN, GPIO.LOW)
-    else:
-        print("[SIMULADO] Buzzer acionado por", duracao, "segundos")
-
-def cleanup():
-    if HARDWARE_DISPONIVEL:
-        GPIO.cleanup()
+for i in range(3):
+    buzzer.on()
+    sleep(1)
+    buzzer.off()
+    sleep(1)
