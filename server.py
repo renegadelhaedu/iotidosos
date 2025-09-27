@@ -1,5 +1,9 @@
-import eventlet
-eventlet.monkey_patch()
+#import eventlet
+#eventlet.monkey_patch()
+
+from gevent import monkey
+monkey.patch_all()
+from gevent import spawn
 import tocarsom
 
 import threading
@@ -64,7 +68,7 @@ def receber_alerta():
             'log_id': log_salvo.id_log,
             'data_hora': log_salvo.horario.isoformat()
         })
-        eventlet.spawn(executar_audio)
+        spawn(executar_audio)
 
         return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
     finally:
