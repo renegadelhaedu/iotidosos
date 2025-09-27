@@ -41,7 +41,6 @@ def receber_alerta():
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
-    eventlet.spawn(executar_audio)
 
     #threading.Thread(target=executar_audio).start()
 
@@ -67,7 +66,10 @@ def receber_alerta():
             'data_hora': log_salvo.horario.isoformat()
         })
         session.close()
+        eventlet.spawn(executar_audio)
+
         return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
+
     except Exception as e:
         print(e)
         return 'deu ruim', 400
