@@ -26,3 +26,6 @@ def tocar_som(caminho_arquivo):
     # Desinicializa o mixer após o uso para liberar o dispositivo
     pygame.mixer.quit()
 
+
+if '__main__' == __name__:
+    tocar_som('lulu.mp3')
