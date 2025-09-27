@@ -1,9 +1,6 @@
-#import eventlet
-#eventlet.monkey_patch()
+import eventlet
+eventlet.monkey_patch()
 
-from gevent import monkey
-monkey.patch_all()
-from gevent import spawn
 import tocarsom
 
 import threading
@@ -14,7 +11,6 @@ from controllers.pessoa_bp import pessoa_bp
 from controllers.log_bp import log_bp
 from database.dao import engine, Base, PessoaDAO, Session, LogDAO
 from models.log import Log
-from controllers.buzzer import setup as buzzer_setup, tocar_buzzer, cleanup as buzzer_cleanup
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'LJlhr3324DH1'
@@ -45,7 +41,7 @@ def receber_alerta():
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
-    #threading.Thread(target=executar_audio).start()
+    threading.Thread(target=executar_audio).start()
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
@@ -68,12 +64,11 @@ def receber_alerta():
             'log_id': log_salvo.id_log,
             'data_hora': log_salvo.horario.isoformat()
         })
-        spawn(executar_audio)
-
-        return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
-    finally:
         session.close()
-
+        return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
+    except Exception as e:
+        print(e)
+        return 'deu ruim', 400
 
 
 if __name__ == '__main__':
