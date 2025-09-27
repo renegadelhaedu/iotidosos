@@ -42,7 +42,7 @@ def receber_alerta():
     tipo_alerta = request.args.get('tipo')
 
     #threading.Thread(target=executar_audio).start()
-    eventlet.spawn(executar_audio)
+
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
     session = Session()
@@ -64,7 +64,7 @@ def receber_alerta():
             'log_id': log_salvo.id_log,
             'data_hora': log_salvo.horario.isoformat()
         })
-
+        eventlet.spawn(executar_audio)
         return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
     finally:
         session.close()
