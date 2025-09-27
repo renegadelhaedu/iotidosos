@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database.models_db import Base, PessoaDB, LogDB
+from sqlalchemy.pool import Pool # Pool padrão do SQLAlchemy
+from gevent.threadpool import ThreadPool # O ThreadPool do Gevent
 
 from models.Pessoa import Pessoa
 from models.log import Log
@@ -10,7 +12,8 @@ DB_PATH = f"sqlite:///{DATABASE_FILE}"
 
 engine = create_engine(
     DB_PATH,
-
+    pool_size=10,  # Garante que haja um limite
+    max_overflow=0,
     connect_args={"check_same_thread": False},
 
     echo=False
