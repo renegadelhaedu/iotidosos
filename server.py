@@ -3,7 +3,7 @@ eventlet.monkey_patch()
 
 import tocarsom
 
-import threading
+#import threading
 
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
@@ -41,7 +41,9 @@ def receber_alerta():
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
-    threading.Thread(target=executar_audio).start()
+    eventlet.spawn(executar_audio)
+
+    #threading.Thread(target=executar_audio).start()
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
@@ -73,7 +75,9 @@ def receber_alerta():
 
 if __name__ == '__main__':
     # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
-    # gunicorn --worker-class gevent -w 1 --bind 0.0.0.0:5000 server:app
+    # gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:5000 server:app
+    #nao pode executar via usuario root pois ele nao deixar tocar o mp3.
+    #tem que dar permissao de escrita ao diretorio do projeto para este usuário novo (sem ser root)
     socketio.run(app,
                  host='0.0.0.0',
                  port=5000,
