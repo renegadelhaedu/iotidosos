@@ -65,6 +65,7 @@ def receber_alerta():
             'data_hora': log_salvo.horario.isoformat()
         })
         eventlet.spawn(executar_audio)
+
         return jsonify({"status": "Recebido", "log_id": log_salvo.id_log}), 200
     finally:
         session.close()
