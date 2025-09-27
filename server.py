@@ -41,8 +41,8 @@ def receber_alerta():
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
-    threading.Thread(target=executar_audio).start()
-
+    #threading.Thread(target=executar_audio).start()
+    eventlet.spawn(executar_audio)
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
     session = Session()
@@ -69,9 +69,7 @@ def receber_alerta():
     finally:
         session.close()
 
-#@app.teardown_appcontext
-#def cleanup_gpio(exception):
-#    buzzer_cleanup()
+
 
 if __name__ == '__main__':
     # galera, lembrem que p rodar com Gunicorn, tem q usar o comando:
