@@ -2,6 +2,7 @@ import eventlet
 eventlet.monkey_patch()
 
 import tocarsom
+from controllers.buzzer import *
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 from controllers.pessoa_bp import pessoa_bp
@@ -19,7 +20,11 @@ app.register_blueprint(log_bp)
 
 
 def executar_audio():
-    tocarsom.tocar_som('lulu.mp3')
+    tocar_buzzer()
+    time.sleep(2)
+    tocar_buzzer()
+    cleanup_gpio()
+#    tocarsom.tocar_som('lulu.mp3')
 
 
 @app.route('/')
@@ -42,7 +47,7 @@ def receber_alerta():
 
     session = Session()
     try:
-        # Salvar log no banco
+
         novo_log = Log(
             id_log=None,
             tipo_ocorrencia=tipo_alerta,
@@ -52,7 +57,7 @@ def receber_alerta():
         dao = LogDAO(session)
         log_salvo = dao.salvar_log(novo_log)
 
-        # Emitir alerta via SocketIO
+
         socketio.emit('novo_alerta', {
             'casa': numero_casa,
             'alerta': tipo_alerta,
@@ -61,7 +66,6 @@ def receber_alerta():
         })
 
         resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
-        print("Resultado Telegram:", resultado_telegram)
 
         eventlet.spawn(executar_audio)
 
@@ -78,7 +82,7 @@ def receber_alerta():
 
 
 if __name__ == '__main__':
-    # Rodar localmente (modo debug)
+
     socketio.run(app,
                  host='0.0.0.0',
                  port=5000,
