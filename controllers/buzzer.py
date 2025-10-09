@@ -12,6 +12,9 @@ try:
         time.sleep(1)
         buzzer_device.off()
 
+    def cleanup_gpio():
+        print('limpei')
+
 
 except ImportError:
     try:
