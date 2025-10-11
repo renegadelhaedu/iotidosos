@@ -11,6 +11,7 @@ def apitar():
             buzzer.on()
             time.sleep(1)
             buzzer.off()
+            time.sleep(1)
 
     except ImportError:
         try:
