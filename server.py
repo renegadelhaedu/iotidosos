@@ -1,7 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
-import os
-os.environ["GPIOZERO_PIN_FACTORY"] = "pigpio"
+
 import tocarsom
 from controllers.buzzer import apitar
 from controllers.buzzer import *
