@@ -1,8 +1,9 @@
-import pygame
+
 import os  # Importar 'os' para definir a variável de ambiente
 
 
 def tocar_som(caminho_arquivo):
+    import pygame
     # --- NOVO: Forçar o uso do driver ALSA ---
     # Isso pode resolver o erro "Couldn't open audio device"
     os.environ['SDL_AUDIODRIVER'] = 'alsa'

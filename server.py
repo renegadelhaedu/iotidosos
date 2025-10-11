@@ -2,6 +2,7 @@ import eventlet
 eventlet.monkey_patch()
 
 import tocarsom
+from controllers.buzzer import apitar
 from controllers.buzzer import *
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
@@ -20,10 +21,7 @@ app.register_blueprint(log_bp)
 
 
 def executar_audio():
-    tocar_buzzer()
-    time.sleep(2)
-    tocar_buzzer()
-    cleanup_gpio()
+    apitar()
 #    tocarsom.tocar_som('lulu.mp3')
 
 
