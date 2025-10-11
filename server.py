@@ -1,6 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
-
+import threading
 import tocarsom
 from controllers.buzzer import apitar
 from controllers.buzzer import *
@@ -43,7 +43,9 @@ def receber_alerta():
 
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
 
-    eventlet.spawn(apitar)
+    #eventlet.spawn(apitar)
+    threading.Thread(target=apitar).start()
+
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
