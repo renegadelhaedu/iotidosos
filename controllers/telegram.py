@@ -43,7 +43,7 @@ def send_telegram_message(tipo, device_id):
     try:
         # Envia para você
         resposta_me = requests.post(url, json={
-            "chat_id": MEU_USER_ID,
+            "chat_id": RENE_USER_ID,
             "text": text_me,
             "parse_mode": "Markdown"
         })
