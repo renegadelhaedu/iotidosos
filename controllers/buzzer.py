@@ -1,4 +1,4 @@
-from eventlet import sleep
+from time import sleep
 
 def apitar():
 
@@ -9,10 +9,8 @@ def apitar():
 
         for i in range(3):
             buzzer.on()
-            sleep(0)  # Força a troca AGORA
             sleep(1)
             buzzer.off()
-            sleep(0)  # Força a troca AGORA
             sleep(1)
 
     except ImportError:
