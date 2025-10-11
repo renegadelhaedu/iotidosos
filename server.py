@@ -1,6 +1,7 @@
 import eventlet
 eventlet.monkey_patch()
-
+import os
+os.environ["GPIOZERO_PIN_FACTORY"] = "pigpio"
 import tocarsom
 from controllers.buzzer import apitar
 from controllers.buzzer import *
@@ -42,8 +43,8 @@ def receber_alerta():
     tipo_alerta = request.args.get('tipo')
 
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
-    apitar()
-    #eventlet.spawn(apitar)
+
+    eventlet.spawn(apitar)
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 

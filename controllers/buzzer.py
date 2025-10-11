@@ -1,4 +1,4 @@
-from time import sleep
+from eventlet import sleep
 
 def apitar():
 
