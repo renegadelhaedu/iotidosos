@@ -1,5 +1,5 @@
-import time
 
+from eventlet import sleep
 def apitar():
 
     try:
@@ -9,9 +9,9 @@ def apitar():
 
         for i in range(5):
             buzzer.on()
-            time.sleep(1)
+            sleep(1)
             buzzer.off()
-            time.sleep(1)
+            sleep(1)
 
     except ImportError:
         try:
@@ -25,7 +25,7 @@ def apitar():
 
             for i in range(5):
                 GPIO.output(BUZZER_PIN, GPIO.HIGH)
-                time.sleep(1)
+                sleep(1)
                 GPIO.output(BUZZER_PIN, GPIO.LOW)
 
 

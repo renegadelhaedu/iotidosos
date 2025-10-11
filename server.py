@@ -41,6 +41,10 @@ def receber_alerta():
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
+    resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
+
+    eventlet.spawn(apitar)
+
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
     session = Session()
@@ -63,9 +67,7 @@ def receber_alerta():
             'data_hora': log_salvo.horario.isoformat()
         })
 
-        resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
 
-        eventlet.spawn(executar_audio)
 
         session.close()
         return jsonify({
