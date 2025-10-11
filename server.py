@@ -3,7 +3,7 @@ eventlet.monkey_patch()
 from multiprocessing import Process
 import tocarsom
 from controllers.buzzer import apitar
-from controllers.buzzer import *
+
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 from controllers.pessoa_bp import pessoa_bp
@@ -43,8 +43,8 @@ def receber_alerta():
 
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
 
-    eventlet.spawn_n(apitar)
-
+    #eventlet.spawn_n(apitar)
+    Process(target=apitar).start()
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
     session = Session()
