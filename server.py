@@ -80,7 +80,8 @@ def receber_alerta():
 
 
 if __name__ == '__main__':
-
+    #NAO APAGUE
+    #gunicorn --worker-class eventlet -w 1 --bind 0.0.0.0:5000 server:app
     socketio.run(app,
                  host='0.0.0.0',
                  port=5000,
