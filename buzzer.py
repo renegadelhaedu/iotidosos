@@ -33,3 +33,6 @@ def apitar():
         except ImportError:
             print("ERRO: Nenhuma biblioteca GPIO (gpiozero ou RPi.GPIO) encontrada. Executando em modo 'dummy'.")
 
+
+if __name__ == '__main__':
+    apitar()
