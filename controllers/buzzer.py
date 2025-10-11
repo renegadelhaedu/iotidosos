@@ -4,16 +4,6 @@ def apitar():
 
     try:
         from gpiozero import Buzzer
-        from gpiozero.devices import Device, BadPinFactory
-
-        try:
-            Device.pin_factory.close()
-        except Exception:
-            # Ignora o erro se a fábrica de pinos não estiver aberta
-            pass
-
-            # Garante que o GPIO Zero inicie o acesso no NOVO processo
-        Device.ensure_pin_factory()
 
         buzzer = Buzzer(17)
 

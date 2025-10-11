@@ -1,6 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
-from multiprocessing import Process
+
 import tocarsom
 from controllers.buzzer import apitar
 
@@ -44,7 +44,7 @@ def receber_alerta():
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
 
     #eventlet.spawn_n(apitar)
-    Process(target=apitar).start()
+
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
     session = Session()
