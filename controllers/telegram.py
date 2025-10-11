@@ -24,9 +24,9 @@ def send_telegram_message(tipo, device_id):
         f"🚨 *ALERTA DO SISTEMA SENTINELA* 🚨\n\n"
         f"📍 Dispositivo: {device_id}\n"
         f"⚠ Tipo de alerta: {tipo}\n\n"
-        f"🔔 Chamando [{MEU_USER_NAME}](tg://user?id={MEU_USER_ID})"
+        f"🔔 Chamando [{RENE_USER_NAME}](tg://user?id={RENE_USER_ID})"
     )
-
+    '''
     # Mensagem para o grupo chamando o Rene
     text_group = (
         f"🚨 *ALERTA DO SISTEMA SENTINELA* 🚨\n\n"
@@ -34,6 +34,8 @@ def send_telegram_message(tipo, device_id):
         f"⚠ Tipo de alerta: {tipo}\n\n"
         f"🔔 Chamando [{RENE_USER_NAME}](tg://user?id={RENE_USER_ID})"
     )
+
+    '''
 
     resultado_me = {"error": "não enviado"}
     resultado_group = {"error": "não enviado"}
@@ -47,6 +49,7 @@ def send_telegram_message(tipo, device_id):
         })
         resultado_me = resposta_me.json()
 
+        '''
         # Envia para o grupo
         resposta_group = requests.post(url, json={
             "chat_id": GROUP_CHAT_ID,
@@ -55,7 +58,9 @@ def send_telegram_message(tipo, device_id):
         })
         resultado_group = resposta_group.json()
 
+        '''
+
     except Exception as e:
         return {"error": str(e)}
 
-    return {"me": resultado_me, "grupo": resultado_group}
+    return {"me": resultado_me, "grupo": 'nada'}
