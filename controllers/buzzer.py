@@ -1,4 +1,5 @@
-from eventlet import sleep
+from time import sleep
+
 def apitar():
 
     try:
@@ -6,7 +7,7 @@ def apitar():
 
         buzzer = Buzzer(17)
 
-        for i in range(5):
+        for i in range(3):
             buzzer.on()
             sleep(0)  # Força a troca AGORA
             sleep(1)

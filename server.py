@@ -42,8 +42,8 @@ def receber_alerta():
     tipo_alerta = request.args.get('tipo')
 
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
-
-    eventlet.spawn(apitar)
+    apitar()
+    #eventlet.spawn(apitar)
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
