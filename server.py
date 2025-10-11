@@ -43,9 +43,7 @@ def receber_alerta():
 
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
 
-    #eventlet.spawn(apitar)
-    Process(target=apitar).start()
-
+    eventlet.spawn_n(apitar)
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
