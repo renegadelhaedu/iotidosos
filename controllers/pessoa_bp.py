@@ -74,6 +74,7 @@ def cadastrar_pessoa():
                 data_nascimento=request.form.get('data_nascimento'),
                 telefone=request.form.get('telefone'),
                 telefone_emergencia=request.form.get('telefone_emergencia'),
+                id_telegram = request.form.get('idtelegram'),
                 historico_medico=request.form.get('historico_medico'),
                 numero_casa=request.form.get('numero_casa')
             )
