@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database.models_db import Base, PessoaDB
 from database.dao import PessoaDAO
-from models.Pessoa import Pessoa
+from models.pessoa import Pessoa
 from models.log import Log
 
 pessoa_bp = Blueprint('pessoa', __name__, url_prefix='/pessoa')
@@ -69,15 +69,17 @@ def cadastrar_pessoa():
         session = get_session()
         try:
             nova_pessoa = Pessoa(
-                id_pessoa=None, # id_pessoa será gerado pelo banco de dados
+                id_pessoa=None,
                 nome=request.form.get('nome'),
                 data_nascimento=request.form.get('data_nascimento'),
                 telefone=request.form.get('telefone'),
                 telefone_emergencia=request.form.get('telefone_emergencia'),
-                id_telegram = request.form.get('idtelegram'),
+                id_telegram=request.form.get('idtelegram'),
                 historico_medico=request.form.get('historico_medico'),
                 numero_casa=request.form.get('numero_casa')
             )
+
+
 
             dao = PessoaDAO(session)
             dao.salvar_pessoa(nova_pessoa)

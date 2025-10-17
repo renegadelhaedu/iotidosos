@@ -21,8 +21,8 @@ app.register_blueprint(log_bp)
 
 
 def executar_audio():
-    apitar()
-#    tocarsom.tocar_som('lulu.mp3')
+    #apitar()
+    tocarsom.tocar_som('lulu.mp3')
 
 
 @app.route('/')
@@ -38,16 +38,18 @@ def monitoramento():
 
 @app.route('/alerta', methods=['GET'])
 def receber_alerta():
+    session = Session()
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
-    resultado_telegram = send_telegram_message(tipo_alerta, numero_casa)
+    id_telegram = PessoaDAO(session).obter_id_telegram_da_casa(numero_casa)
+    resultado_telegram = send_telegram_message(tipo_alerta, numero_casa, id_telegram)
 
-    #eventlet.spawn_n(apitar)
+    #eventlet.spawn_n(executar_audio)
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
-    session = Session()
+
     try:
 
         novo_log = Log(

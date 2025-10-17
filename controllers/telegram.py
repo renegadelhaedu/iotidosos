@@ -3,7 +3,7 @@ import requests
 
 
 # ===== CONFIGURAÇÃO =====
-TELEGRAM_TOKEN = "8383002236:AAGqwNYWX2EIPrS7s6aCyiH_2s_e1ihQLkE"
+TELEGRAM_TOKEN = "8357123466:AAGqwNYWX2EIPrS7s6aCyiH_2s_e1ihQLkE"
 
 # Seus dados
 MEU_USER_ID = 7018372797   # Edivaldo
@@ -14,17 +14,17 @@ GROUP_CHAT_ID = -4824595325    # Grupo "Rene e SentinelaBot"
 RENE_USER_ID = 8357123466
 RENE_USER_NAME = "Rene"
 
-def send_telegram_message(tipo, device_id):
+def send_telegram_message(tipo, device_id, id_telegram):
     """Envia alerta para você diretamente e para o Rene no grupo"""
 
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-
+    print(id_telegram)
     # Mensagem para você
     text_me = (
         f"🚨 *ALERTA DO SISTEMA SENTINELA* 🚨\n\n"
-        f"📍 Dispositivo: {device_id}\n"
+        f"📍 Casa: {device_id}\n"
         f"⚠ Tipo de alerta: {tipo}\n\n"
-        f"🔔 Chamando [{RENE_USER_NAME}](tg://user?id={RENE_USER_ID})"
+        f"🔔 Chamando [Responsável](tg://user?id={id_telegram})"
     )
     '''
     # Mensagem para o grupo chamando o Rene
@@ -43,7 +43,7 @@ def send_telegram_message(tipo, device_id):
     try:
         # Envia para você
         resposta_me = requests.post(url, json={
-            "chat_id": RENE_USER_ID,
+            "chat_id": id_telegram,
             "text": text_me,
             "parse_mode": "Markdown"
         })

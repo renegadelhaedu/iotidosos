@@ -2,8 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database.models_db import Base, PessoaDB, LogDB
 
-from models.Pessoa import Pessoa
-from models.log import Log
 
 DATABASE_FILE = 'condominio.db'
 DB_PATH = f"sqlite:///{DATABASE_FILE}"
@@ -23,6 +21,7 @@ class PessoaDAO:
             data_nascimento=pessoa.data_nascimento,
             telefone=pessoa.telefone,
             telefone_emergencia=pessoa.telefone_emergencia,
+            id_telegram=pessoa.id_telegram,
             historico_medico=pessoa.historico_medico,
             numero_casa=pessoa.numero_casa
         )
@@ -41,6 +40,11 @@ class PessoaDAO:
     def obter_pessoas_por_casa(self, numero_casa):
         """Retorna todas as pessoas de uma determinada casa."""
         return self.session.query(PessoaDB).filter_by(numero_casa=numero_casa).all()
+
+    def obter_id_telegram_da_casa(self, numero_casa):
+        """Retorna o id telegram da pessoa que mora em determinada casa."""
+        return self.session.query(PessoaDB).filter_by(numero_casa=numero_casa).first().id_telegram
+
 
     def atualizar_pessoa(self, pessoa_db, dados_novos):
         """Atualiza os dados de uma pessoa existente no banco de dados."""

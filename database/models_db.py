@@ -13,6 +13,7 @@ class PessoaDB(Base):
     data_nascimento = Column(String)
     telefone = Column(String)
     telefone_emergencia = Column(String)
+    id_telegram = Column(String)
     historico_medico = Column(String)
     numero_casa = Column(String)
 
