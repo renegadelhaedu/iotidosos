@@ -1,6 +1,6 @@
 import eventlet
 eventlet.monkey_patch()
-
+import os
 import tocarsom
 from controllers.buzzer import apitar
 
@@ -22,7 +22,9 @@ app.register_blueprint(log_bp)
 
 def executar_audio():
     #apitar()
-    tocarsom.tocar_som('lulu.mp3')
+    caminho_arquivo = os.path.abspath('lulu.mp3')
+    caminho_arquivo = caminho_arquivo.replace("\\", "/")
+    tocarsom.tocar_som_windows(caminho_arquivo)
 
 
 @app.route('/')
@@ -45,10 +47,9 @@ def receber_alerta():
     id_telegram = PessoaDAO(session).obter_id_telegram_da_casa(numero_casa)
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa, id_telegram)
 
-    #eventlet.spawn_n(executar_audio)
+    eventlet.spawn_n(executar_audio)
 
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
-
 
     try:
 

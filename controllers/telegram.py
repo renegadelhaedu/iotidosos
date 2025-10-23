@@ -43,12 +43,12 @@ def send_telegram_message(tipo, device_id, id_telegram):
     try:
         # Envia para você
         resposta_me = requests.post(url, json={
-            "chat_id": id_telegram,
+            "chat_id": 7018372797,
             "text": text_me,
             "parse_mode": "Markdown"
         })
         resultado_me = resposta_me.json()
-
+        print(resultado_me)
         '''
         # Envia para o grupo
         resposta_group = requests.post(url, json={

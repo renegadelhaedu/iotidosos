@@ -1,8 +1,13 @@
-
+from playsound import playsound
 import os  # Importar 'os' para definir a variável de ambiente
 
 
-def tocar_som(caminho_arquivo):
+def tocar_som_windows(caminho_arquivo):
+
+
+    playsound(caminho_arquivo)
+
+def tocar_som_linux(caminho_arquivo):
     import pygame
     # --- NOVO: Forçar o uso do driver ALSA ---
     # Isso pode resolver o erro "Couldn't open audio device"
