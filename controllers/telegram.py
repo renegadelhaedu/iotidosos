@@ -3,7 +3,7 @@ import requests
 
 
 # ===== CONFIGURAÇÃO =====
-TELEGRAM_TOKEN = "8357123466:AAGqwNYWX2EIPrS7s6aCyiH_2s_e1ihQLkE"
+TELEGRAM_TOKEN = "8383002236:AAGqwNYWX2EIPrS7s6aCyiH_2s_e1ihQLkE"
 
 # Seus dados
 MEU_USER_ID = 7018372797   # Edivaldo
@@ -43,7 +43,7 @@ def send_telegram_message(tipo, device_id, id_telegram):
     try:
         # Envia para você
         resposta_me = requests.post(url, json={
-            "chat_id": 7018372797,
+            "chat_id": id_telegram,
             "text": text_me,
             "parse_mode": "Markdown"
         })
