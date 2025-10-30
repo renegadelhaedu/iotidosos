@@ -40,8 +40,8 @@ socket.on('novo_alerta', function(data) {
 
     const houseElement = document.getElementById(`house${houseId}`);
     if (houseElement) {
-        playAlertSound();
-        alertIntervalId = setInterval(playAlertSound, 2000);
+        //playAlertSound();
+        //alertIntervalId = setInterval(playAlertSound, 2000);
 
         houseElement.classList.remove('normal');
         houseElement.classList.add('alert');

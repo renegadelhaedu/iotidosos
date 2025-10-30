@@ -43,7 +43,7 @@ def detalhes_modal_pessoa(id):
         dao = PessoaDAO(session)
         pessoa = dao.obter_pessoa_por_id(id)
         if not pessoa:
-            return render_template('erro.html', mensagem="Pessoa não encontrada"), 404
+            return render_template('pessoa/erro.html', mensagem="Pessoa não encontrada"), 404
 
         return render_template('pessoa/detalhesmodal.html', pessoa=pessoa)
     finally:
@@ -56,7 +56,7 @@ def detalhes_pessoa(id):
         dao = PessoaDAO(session)
         pessoa = dao.obter_pessoa_por_id(id)
         if not pessoa:
-            return render_template('erro.html', mensagem="Pessoa não encontrada"), 404
+            return render_template('pessoa/erro.html', mensagem="Pessoa não encontrada"), 404
 
         return render_template('pessoa/detalhes.html', pessoa=pessoa)
     finally:
@@ -98,16 +98,13 @@ def editar_pessoa(id):
         dao = PessoaDAO(session)
         pessoa_db = dao.obter_pessoa_por_id(id)
         if not pessoa_db:
-            return render_template('erro.html', mensagem="Pessoa não encontrada"), 404
+            return render_template('pessoa/erro.html', mensagem="Pessoa não encontrada"), 404
 
         if request.method == 'POST':
             dados_novos = request.form
             dao.atualizar_pessoa(pessoa_db, dados_novos)
 
-            return jsonify({
-                "status": "sucesso",
-                "mensagem": "Pessoa atualizada com sucesso"
-            }), 200
+            return redirect(url_for('pessoa.listar_pessoas'))
 
         return render_template('pessoa/editar.html', pessoa=pessoa_db)
     finally:
@@ -121,12 +118,10 @@ def excluir_pessoa(id):
         dao = PessoaDAO(session)
         excluido = dao.excluir_pessoa(id)
         if excluido:
-            return redirect(url_for('listar_pessoas'))
+            return redirect(url_for('pessoa.listar_pessoas'))
         else:
-            return jsonify({
-                "status": "erro",
-                "mensagem": "Pessoa não encontrada"
-            }), 404
+            return render_template('pessoa/erro.html', mensagem="Pessoa não removida"), 404
+
     finally:
         session.close()
 
