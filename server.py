@@ -2,7 +2,9 @@ import eventlet
 eventlet.monkey_patch()
 import os
 import tocarsom
+import pygame
 from controllers.buzzer import apitar
+import threading
 
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
@@ -18,13 +20,30 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 app.register_blueprint(pessoa_bp)
 app.register_blueprint(log_bp)
-
+pode_tocar = True
 
 def executar_audio():
     #apitar()
+    global pode_tocar
+
     caminho_arquivo = os.path.abspath('lulu.mp3')
-    caminho_arquivo = caminho_arquivo.replace("\\", "/")
-    tocarsom.tocar_som_windows(caminho_arquivo)
+    if os.name == 'nt':
+        caminho_arquivo = caminho_arquivo.replace("\\", "/")
+        #tocarsom.tocar_som_linux(caminho_arquivo)
+    else:
+        #tocarsom.tocar_som_linux(caminho_arquivo)
+        os.environ['SDL_AUDIODRIVER'] = 'alsa'
+    try:
+        pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096)
+        pygame.mixer.music.load(caminho_arquivo)
+        pygame.mixer.music.play(loops=0)
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
+        pygame.mixer.quit()
+    except pygame.error as e:
+        print(f"Erro: {e}")
+
+    pode_tocar = True
 
 
 @app.route('/')
@@ -40,15 +59,21 @@ def monitoramento():
 
 @app.route('/alerta', methods=['GET'])
 def receber_alerta():
+    global pode_tocar
     session = Session()
     numero_casa = request.args.get('id')
     tipo_alerta = request.args.get('tipo')
 
     id_telegram = PessoaDAO(session).obter_id_telegram_da_casa(numero_casa)
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa, id_telegram)
+    print(resultado_telegram)
 
-    eventlet.spawn_n(executar_audio)
+    if pode_tocar:
+        pode_tocar = False
+        eventlet.spawn_n(executar_audio)
+        #threading.Thread(target=executar_audio).start()
 
+    print('tocou')
     descricao = f"Alerta recebido da casa {numero_casa}: {tipo_alerta}"
 
     try:
@@ -71,13 +96,8 @@ def receber_alerta():
         })
 
 
-
         session.close()
-        return jsonify({
-            "status": "Recebido",
-            "log_id": log_salvo.id_log,
-            "telegram": resultado_telegram
-        }), 200
+        return 'ok', 200
 
     except Exception as e:
         print("Erro no alerta:", e)

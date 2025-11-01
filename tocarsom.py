@@ -1,17 +1,16 @@
 from playsound import playsound
-import os  # Importar 'os' para definir a variável de ambiente
-
+import os
+import server
 
 def tocar_som_windows(caminho_arquivo):
-
-
     playsound(caminho_arquivo)
+
 
 def tocar_som_linux(caminho_arquivo):
     import pygame
     # --- NOVO: Forçar o uso do driver ALSA ---
     # Isso pode resolver o erro "Couldn't open audio device"
-    os.environ['SDL_AUDIODRIVER'] = 'alsa'
+    #os.environ['SDL_AUDIODRIVER'] = 'alsa'
 
     # É uma boa prática iniciar o mixer com uma frequência e tamanho de buffer específicos
     # Padrões comuns: frequência 44100 ou 48000

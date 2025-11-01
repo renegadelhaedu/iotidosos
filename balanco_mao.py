@@ -11,8 +11,8 @@ from exceptiongroup import catch
 # Parâmetros ajustáveis
 MAX_HISTORY = 30            # quantos frames manter no histórico
 MIN_CONTOUR_AREA = 2500     # descartar blobs menores (ajustar)
-DX_CHANGE_THRESHOLD = 35     # deslocamento mínimo para considerar uma mudança significativa (pixels)
-SWINGS_REQUIRED = 6         # quantas mudanças de direção (vai/volta) para considerar um "balanço"
+DX_CHANGE_THRESHOLD = 30    # deslocamento mínimo para considerar uma mudança significativa (pixels)
+SWINGS_REQUIRED = 5         # quantas mudanças de direção (vai/volta) para considerar um "balanço"
 WINDOW_FPS = 30             # usado só para referência (não crítico)
 
 HOST_PORTA = 'http://localhost:5000'
@@ -90,7 +90,8 @@ while True:
         pass
 
     waving = detect_waving(centers)
-    if waving and (time.time() - ultimo_alerta > COOLDOWN):
+    key2 = cv2.waitKey(1) & 0xFF
+    if waving and (time.time() - ultimo_alerta > COOLDOWN) and key2 == 32:
         cv2.putText(frame_small, "AJUDAAA!", (10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
         try:
             resp = requests.get(HOST_PORTA + '/alerta?id=1&tipo=gesto')
