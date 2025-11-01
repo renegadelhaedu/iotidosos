@@ -1,8 +1,6 @@
-from playsound import playsound
-import os
-import server
-
 def tocar_som_windows(caminho_arquivo):
+    from playsound import playsound
+
     playsound(caminho_arquivo)
 
 
