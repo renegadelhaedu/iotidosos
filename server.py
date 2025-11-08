@@ -65,6 +65,7 @@ def receber_alerta():
     tipo_alerta = request.args.get('tipo')
 
     id_telegram = PessoaDAO(session).obter_id_telegram_da_casa(numero_casa)
+    print(id_telegram)
     resultado_telegram = send_telegram_message(tipo_alerta, numero_casa, id_telegram)
     print(resultado_telegram)
 
