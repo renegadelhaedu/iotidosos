@@ -81,7 +81,7 @@ def cadastrar_pessoa():
             dao = PessoaDAO(session)
             dao.salvar_pessoa(nova_pessoa)
 
-            return render_template('pessoa/homepessoa.html')
+            return redirect(url_for('pessoa.listar_pessoas'))
         finally:
             session.close()
 
@@ -101,10 +101,7 @@ def editar_pessoa(id):
             dados_novos = request.form
             dao.atualizar_pessoa(pessoa_db, dados_novos)
 
-            return jsonify({
-                "status": "sucesso",
-                "mensagem": "Pessoa atualizada com sucesso"
-            }), 200
+            return redirect(url_for('pessoa.listar_pessoas'))
 
         return render_template('pessoa/editar.html', pessoa=pessoa_db)
     finally:
@@ -118,7 +115,7 @@ def excluir_pessoa(id):
         dao = PessoaDAO(session)
         excluido = dao.excluir_pessoa(id)
         if excluido:
-            return redirect(url_for('listar_pessoas'))
+            return redirect(url_for('pessoa.listar_pessoas'))
         else:
             return jsonify({
                 "status": "erro",

@@ -291,3 +291,8 @@ flex-direction: column;
 width: 100%;
 }
 }
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
